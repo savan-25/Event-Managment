@@ -1,0 +1,68 @@
+
+<div class="row mt-5">
+    <div class="col-md-4 mb-3" *ngFor="let event of specialEvents">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">{{event.name}}</h5>
+          <p class="card-text">{{event.description}}</p>
+          <a  class="btn btn-primary" (click)="openAdmissionModal(event)">Take Admission</a>
+        </div>
+        <div class="card-footer text-muted">
+          {{event.Teacher}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+<!-- Admission Modal -->
+<div class="modal fade" id="admissionModal" tabindex="-1" aria-labelledby="admissionModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="admissionModalLabel">
+          Admission for {{ selectedEvent?.name }}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form [formGroup]="admissionForm" (ngSubmit)="submitAdmission()">
+  <div class="modal-body">
+    <label>Student Name</label>
+    <input type="text"
+           class="form-control"
+           formControlName="studentName"
+           [class.is-invalid]="admissionForm.get('studentName')?.invalid && admissionForm.get('studentName')?.touched">
+    <small class="text-danger"
+           *ngIf="admissionForm.get('studentName')?.invalid && admissionForm.get('studentName')?.touched">
+      Name is required
+    </small>
+
+    <label>Email</label>
+    <input type="text"
+           class="form-control"
+           formControlName="email"
+           [class.is-invalid]="admissionForm.get('email')?.invalid && admissionForm.get('email')?.touched">
+    <small class="text-danger"
+           *ngIf="admissionForm.get('email')?.invalid && admissionForm.get('email')?.touched">
+      Email is invalid
+    </small>
+
+    <label>Phone</label>
+    <input type="text"
+           class="form-control"
+           formControlName="phone"
+           [class.is-invalid]="admissionForm.get('phone')?.invalid && admissionForm.get('phone')?.touched">
+    <small class="text-danger"
+           *ngIf="admissionForm.get('phone')?.invalid && admissionForm.get('phone')?.touched">
+      Phone number is invalid
+    </small>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+    <button type="submit" class="btn btn-success" [disabled]="admissionForm.invalid">Submit Admission</button>
+  </div>
+</form>
