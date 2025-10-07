@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 export interface Participant{
   name:string;
   email:string;
+  event:string;
 }
 
 @Injectable({

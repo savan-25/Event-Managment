@@ -8,7 +8,8 @@ declare var bootstrap: any; // allows Bootstrap JS to be used
 @Component({
   selector: 'app-event',
   templateUrl: './event.component.html',
-  standalone : false
+  standalone : false,
+  styleUrl:'./event.component.css'
 })
 export class EventComponent implements OnInit 
 {  

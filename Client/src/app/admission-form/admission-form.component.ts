@@ -23,30 +23,30 @@ export class AdmissionFormComponent implements OnInit{
         {
           name:['',[Validators.required]],
           email:['',[Validators.required,Validators.email]],
-          phone:['',[Validators.required ,Validators.pattern(/^[0-9]{10}$/)]]
+          phone:['',[Validators.required ,Validators.pattern(/^[0-9]{10}$/)]],
+          event:['']
         }
-       )
+       );
+        if (this.selectedEvent) {
+    this.admissionForm.patchValue({
+      event: this.selectedEvent.name
+    })
+  }
+     
    }
-   onSubmit()
-   {
-    if(this.admissionForm.valid)
-    {
-      const formData = {
-        ...this.admissionForm.value,
-        eventId:this.selectedEvent?._id || null
-      };
+  onSubmit() {
+  
+ if (this.admissionForm.valid) {
+    const formData = {
+      ...this.admissionForm.value,
+      event: this.selectedEvent?.name
+    };
+    console.log("Submitting:", formData);
+
     this._authService.submitAdmission(formData).subscribe({
-      next: (res) => {
-        alert("Admission submitted successfully!");
-        this.formSubmitted.emit(formData); // emit if parent is listening
-        this.admissionForm.reset();
-      },
-      error: (err) => {
-        alert("Error submitting admission.");
-      }
+      next: res => alert("Success"),
+      error: err => console.error(err)
     });
-
-    }
-   }
-
+  }
 }
+  }

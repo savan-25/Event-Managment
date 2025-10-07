@@ -6,7 +6,7 @@ const api = require('./routes/api');
 const eventRoutes = require('./routes/event');
 const adminRoutes = require('./routes/admin');
 const adminEventRoutes = require('./routes/adminEvents');
-const port = 3000;
+const port = process.env.port || 3000;
 
 const app = express();
 
