@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://your-backend-domain.com/api' // deployed backend
+  apiUrl: 'https://event-managment-1-ztxz.onrender.com'
 };
