@@ -14,7 +14,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.json());
 
-mongoose.connect("mongodb://localhost:27017/Eventdb", {
+mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/Eventdb", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
@@ -25,6 +25,8 @@ app.use('/event', eventRoutes);
 app.use('/admin', adminRoutes);
 app.use('/adminEvents', adminEventRoutes);
 
-app.listen(port, function () {
-    console.log('Marvellous infosystem server running on localhost:' + port);
-});
+// app.listen(port, function () {
+//     console.log('Marvellous infosystem server running on localhost:' + port);
+// });
+
+app.listen(PORT, () => console.log(`Server running on port ${port}`));
