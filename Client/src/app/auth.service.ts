@@ -9,8 +9,13 @@ import { EventData } from './event/eventi.component';
 })
 export class AuthService {
   
-  private Url = 'http://localhost:3000/api';
-    private EventUrl = 'http://localhost:3000/event';
+  // private Url = 'http://localhost:3000/api';
+  //   private EventUrl = 'http://localhost:3000/event';
+
+  private Url = 'https://event-managment-2-w232.onrender.com/api';
+private EventUrl = 'https://event-managment-2-w232.onrender.com/event';
+
+
   constructor(private http :HttpClient , private _router: Router) { }
    
   // registering to portal
