@@ -12,7 +12,7 @@ export interface Participant{
   providedIn: 'root'
 })
 export class AdminService {
-  private apiUrl = 'http://localhost:3000'; // Change to your backend URL
+  private apiUrl = 'https://event-managment-2-w232.onrender.com'; // Change to your backend URL
 
   constructor(private http: HttpClient) {}
 
