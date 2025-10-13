@@ -5,6 +5,9 @@ const newAddmission = require('../models/admission')
 const jwt = require('jsonwebtoken');
 const Event = require('../models/Event');
 
+
+const nodemailer = require('nodemailer');
+
 const SECRETE_KEY = "savan@25";
 
 router.post('/login',async(req,res) =>
@@ -117,7 +120,12 @@ router.post('/admission',async(req,res) =>
       {
          return res.status(404).json({message:'event not found'});
       }
-
+      
+       const existingUser = await newAddmission.findOne({email,event:event});
+      if(existingUser)
+      {
+         return res.status(400).json({message:'User already exists'});
+      }
       // 2.Map frontend data to Addmission schema
       const admission  =  new newAddmission ({
          name:studentName,
@@ -126,6 +134,28 @@ router.post('/admission',async(req,res) =>
          event:event.name
       });
       await admission.save();
+
+    
+         // 3. Send confirmation email
+   const transporter = nodemailer.createTransport({
+             service: 'gmail',
+             auth: {
+                 user:'savansumbe.sit.comp@gmail.com',
+                 pass: 'xwme fdsx kmnf qjny'
+             }
+         });
+         
+    let mailOptions = {
+      from: '"Event Hub" <savansumbe.sit.comp@gmail.com>',
+      to: email,
+      subject: 'Event Registration Successful',
+      text: `Hi ${studentName},\n\nCongratulations! You have successfully registered for the event: ${event.name}.\n\nThank you!`,
+    };
+
+    transporter.sendMail(mailOptions, (err, info) => {
+      if (err) console.log('Email error:', err.message);
+      else console.log('Email sent:', info.response);
+    });
 
       res.status(201).json({message:' Admission Successful ',admission});
    }catch(err)

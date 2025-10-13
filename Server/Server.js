@@ -26,7 +26,8 @@
 // app.use('/adminEvents', adminEventRoutes);
 
 // // app.listen(port, function () {
-// //     console.log('Marvellous infosystem server running on localhost:' + port);
+// //     console.lo
+// g('Marvellous infosystem server running on localhost:' + port);
 // // });
 
 // app.listen(port, () => console.log(`Server running on port ${port}`));
@@ -48,8 +49,11 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.json());
 
+console.log("EMAIL:", 'savansumbe.sit.comp@gmail.com');
+console.log("PASSWORD:", 'xwme fdsx kmnf qjny');
 // MongoDB connection
-mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/Eventdb", {
+mongoose.connect("mongodb+srv://savansumbe_db_user:tjaHpprrZOwQVXUK@cluster0.5er1cvv.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+     {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
