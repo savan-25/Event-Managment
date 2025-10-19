@@ -1,13 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User')
-const newAddmission = require('../models/admission')
+const newAdmission = require('../models/admission')
 const jwt = require('jsonwebtoken');
-const Event = require('../models/Event');
-
-
-const nodemailer = require('nodemailer');
-
 const SECRETE_KEY = "savan@25";
 
 router.post('/login',async(req,res) =>
@@ -27,144 +22,50 @@ router.post('/login',async(req,res) =>
       message:"Login Successful"
    })
 })
-// router.post('/signup',async(req,res) =>
-// {
-//     console.log('Recived Signup dataa',req.body);
-
-//     const { name,email,mobile,password} = req.body;
-
-//      try{
-//        const existingUser = await User.findOne({ email });
-
-//     if(existingUser)
-//     {
-//      return res.status(400).json({ message: 'user already exists'});
-//     }
-//      const user = new User({ name,email,mobile,password});
-//      await user.save();
-//      res.status(201).json(user);
-//      }catch(err)
-//      {
-//         console.error('signup error',err.message);
-//      res.status(400).send(err.message);
-
-//      }
-// })
-router.post('/signup',async(req,res) => 
+router.post('/signup',async(req,res) =>
 {
-   try 
-   {
-      const { name, email,mobile,password} = req.body;
+    console.log('Recived Signup dataa',req.body);
 
-      // 1. Basic Validation
-      if(!name || !email || !mobile || !password)
-      {
-         return res.status(400).json({message:' All Fields are required'});
-      }
+    const { name,email,mobile,password} = req.body;
 
-      // Email format validation
-      const emailRegex =  /\S+@\S+\.\S+/;
-      if(!emailRegex.test(email))
-      {
-         return res.status(400).json({message:'Invalid Email Format'});
-      }
-      // check if user already exists
-      const existingUser = await User.findOne({email});
-      if(existingUser)
-      {
-         return res.status(400).json({message:'User already exists'});
-      }
+     try{
+       const existingUser = await User.findOne({ email });
 
+    if(existingUser)
+    {
+     return res.status(400).json({ message: 'user already exists'});
+    }
+     const user = new User({ name,email,mobile,password});
+     await user.save();
+     res.status(201).json(user);
+     }catch(err)
+     {
+        console.error('signup error',err.message);
+     res.status(400).send(err.message);
 
-      // create the new user
-      const user = new User({name ,email,mobile,password});
-      await user.save();
-      res.status(201).json(user);
-   }
-   catch(err)
-   {
-      console.error('Signup error : ',err);
-      res.status(500).json({message:'Something went wrong .Please try again'});
-   }
-});
-// router.post('/admission',async(req,res) =>
-// { 
-//     console.log("Recived data :" ,req.body);
-//    const { studentName,email,phone,eventId} = req.body;
-
-//    try
-//    {
-//       const newAdd = new newAddmission({
-//          name:studentName
-//          ,email,phone,
-//          event:eventId });
-//       await newAdd.save();
-
-//       res.status(201).json(newAdd);
-//    }catch(err)
-//    {
-//       console.error('admission error',err.message);
-//       res.status(400).send(err.message);
-//    }
+     }
+})
+router.post('/admission',async(req,res) =>
+{
    
-// })
-router.post('/admission',async(req,res) => 
-{
-   try 
+   try
    {
-    
       const { name, email, phone, eventId } = req.body;
 
        if (!name || !email || !eventId) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
-      // find the event  by ID
-      const event = await Event.findById(eventId);
-      if(!event)
-      {
-         return res.status(404).json({message:'event not found'});
-      }
-      
-       const existingUser = await newAddmission.findOne({email,event:event});
-      if(existingUser)
-      {
-         return res.status(400).json({message:'User already exists'});
-      }
-      // 2.Map frontend data to Addmission schema
-     
-     const Admission = new newAdmission({ name, email, phone, eventId });
+    const Admission = new newAdmission({ name, email, phone, eventId });
     await Admission.save();
 
      res.status(201).json({ message: 'Admission submitted successfully', admission: newAdmission });
 
-         // 3. Send confirmation email
-   const transporter = nodemailer.createTransport({
-             service: 'gmail',
-             auth: {
-                 user:'savansumbe.sit.comp@gmail.com',
-                 pass: 'xwme fdsx kmnf qjny'
-             }
-         });
-         
-    let mailOptions = {
-      from: '"Event Hub" <savansumbe.sit.comp@gmail.com>',
-      to: email,
-      subject: 'Event Registration Successful',
-      text: `Hi ${studentName},\n\nCongratulations! You have successfully registered for the event: ${event.name}.\n\nThank you!`,
-    };
-
-    transporter.sendMail(mailOptions, (err, info) => {
-      if (err) console.log('Email error:', err.message);
-      else console.log('Email sent:', info.response);
-    });
-
-      res.status(201).json({message:' Admission Successful ',admission});
    }catch(err)
    {
-      console.error('Admission error :',err.message);
-      res.status(400).json({message:err.message});
-      
+      console.error('admission error',err.message);
+      res.status(400).send(err.message);
    }
-});
+   
+})
 
 module.exports = router;
