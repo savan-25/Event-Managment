@@ -1,40 +1,92 @@
-<div class="dashboard-container">
-  
-  <h1>Admin Dashboard</h1>
+<div class="dashboard-container container mt-5">
 
-  <div class="section">
-    <h2>Add New Event</h2>
+  <h1 class="text-center mb-4">🎯 Admin Dashboard</h1>
+
+  <!-- Navigation Buttons -->
+  <div class="btn-group d-flex justify-content-center mb-4">
+    <button class="btn btn-outline-primary" [class.active]="activeSection === 'addEvent'" (click)="showSection('addEvent')">➕ Add Event</button>
+    <button class="btn btn-outline-primary" [class.active]="activeSection === 'participants'" (click)="showSection('participants')">👥 All Participants</button>
+    <button class="btn btn-outline-primary" [class.active]="activeSection === 'manageEvents'" (click)="showSection('manageEvents')">🛠️ Manage Events</button>
+  </div>
+
+  <!-- Add Event Section -->
+  <div class="card shadow-lg p-4 mb-4" *ngIf="activeSection === 'addEvent'">
+    <h3 class="mb-3 text-primary">Add New Event</h3>
     <form [formGroup]="eventForm" (ngSubmit)="submitEvent()">
-      <input formControlName="name" placeholder="Event Name" required />
-      <textarea formControlName="description" placeholder="Description"></textarea>
-      <input formControlName="Teacher" placeholder="Teacher Name" />
-      <select formControlName="type">
-        <option value="event">Event</option>
-        <option value="special">special</option>
-        
-      </select>
-      <button type="submit" [disabled]="eventForm.invalid">Add Event</button>
+      <div class="mb-3">
+        <label class="form-label fw-bold">Event Name</label>
+        <input formControlName="name" class="form-control" placeholder="Enter event name" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold">Description</label>
+        <textarea formControlName="description" class="form-control" rows="3" placeholder="Enter description"></textarea>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold">Teacher Name</label>
+        <input formControlName="Teacher" class="form-control" placeholder="Enter teacher name" />
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold">Type</label>
+        <select formControlName="type" class="form-select">
+          <option value="event">Event</option>
+          <option value="special">Special</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-success w-100 mt-2" [disabled]="eventForm.invalid">Add Event</button>
     </form>
   </div>
 
-  <div class="section">
-    <h2>All Participants</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Event</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let participant of participants">
-          <td>{{ participant.name }}</td>
-          <td>{{ participant.email }}</td>
-          <td>{{ participant.event}}</td>
-        </tr>
-      </tbody>
-    </table>
+  <!-- Participants Section -->
+  <div class="card shadow-lg p-4 mb-4" *ngIf="activeSection === 'participants'">
+    <h3 class="mb-3 text-primary">All Participants</h3>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover align-middle">
+        <thead class="table-primary">
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Event</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let participant of participants">
+            <td>{{ participant.name }}</td>
+            <td>{{ participant.email }}</td>
+            <td>{{ participant.eventId?.name || 'Unknown Event' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Manage Events Section -->
+  <div class="card shadow-lg p-4 mb-4" *ngIf="activeSection === 'manageEvents'">
+    <h3 class="mb-3 text-primary">Manage Events</h3>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover align-middle">
+        <thead class="table-primary">
+          <tr>
+            <th>Event Name</th>
+            <th>Description</th>
+            <th>Teacher</th>
+            <th>Type</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let event of events">
+            <td>{{ event.name }}</td>
+            <td>{{ event.description }}</td>
+            <td>{{ event.Teacher }}</td>
+            <td>{{ event.type }}</td>
+            <td>
+              <button class="btn btn-sm btn-warning me-2" (click)="editEvent(event)">Edit</button>
+              <button class="btn btn-sm btn-danger" (click)="deleteEvent(event._id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
 </div>

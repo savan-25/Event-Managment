@@ -40,7 +40,8 @@ const api = require('./routes/api');
 const eventRoutes = require('./routes/event');
 const adminRoutes = require('./routes/admin');
 const adminEventRoutes = require('./routes/adminEvents');
-
+//const session = require('express-session');
+const MongoStore = require('connect-mongo');
 const port = process.env.PORT || 3000; // ✅ Correct variable name
 
 const app = express();

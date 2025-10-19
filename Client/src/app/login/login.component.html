@@ -1,3 +1,10 @@
+<div class="container mt-4 text-center">
+  <div class="p-4 rounded shadow" style="background: linear-gradient(135deg, #ff9800, #f57c00, #e65100); color: #fff;">
+    <h2 style="font-weight: bold;">🔐 Welcome Back!</h2>
+    <p style="font-size: 1.1rem;">Login to continue exploring your event journey 🎉</p>
+  </div>
+</div>
+
 <div class="py-5">
     <div class="row">
       <div class="col-md-6 mx-auto">
@@ -6,16 +13,16 @@
         <!-- form card login -->
         <div class="card rounded-0">
           <div class="card-header">
-            <h3 class="mb-0">Marvellous Infosystems Member Login</h3>
+            <h3 class="mb-0"> Sinhgad EventHub Portal Login</h3>
           </div>
           <div class="card-body">
             <form class="form">
               <div class="form-group">
-                <label for="uname1">Marvellous Member Name : (USERNAME) </label>
+                <label for="uname1">Sinhgad Member Name : (USERNAME) </label>
                 <input type="text" class="form-control rounded-0" [(ngModel)]="loginUserData.email" name="email" required>
               </div>
               <div class="form-group">
-                <label>Registration ID</label>
+                <label>Password</label>
                 <input type="password" class="form-control rounded-0" [(ngModel)]="loginUserData.password" name="password" required>
               </div>
               <button type="button" (click)="loginUser()" class="btn btn-success float-right">Login</button>
