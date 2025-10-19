@@ -9,19 +9,19 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./admin-dashboard.component.css']
 })
 export class AdminDashboardComponent implements OnInit {
- eventForm: FormGroup;
-  participants: Participant[] = [];
+ 
+  eventForm: FormGroup; //Holds form fields for adding/editing events
+  participants: Participant[] = [];//List of participants fetched from backend
   events: any[] = []; //List of all events displayed in dashboard
   editingEventId: string | null = null;//Used to track which event is being edited
   isLoading = false; //Boolean flag to show loader during data fetch
-   activeSection: string = 'addEvent'; // Helps toggle between different dashboard section
+   activeSection: string = 'addEvent'; // Helps toggle between different dashboard sections
 
   constructor(
     private fb: FormBuilder,
     private eventService: AdminService,
-    private participantService: AdminService
   ) 
-    {
+  {
     this.eventForm = this.fb.group({
       name: ['', Validators.required],
       description: ['',Validators.required],
@@ -30,13 +30,30 @@ export class AdminDashboardComponent implements OnInit {
     });
   }
 
+  // Runs Automatically when component is loads
+
   ngOnInit(): void {
-    this.loadParticipants();
-    this.loadEvents();
+    // fetchs all the participant ,events from backend service
+    this.eventService.getParticipants().subscribe({
+      next: (res) => this.participants = res,
+      error: (err) => console.error('Error fetching participants:', err)
+    });
+    this.eventService.getAllEvents().subscribe({//subscribe() listens to the HTTP observable and handles success/error.
+      next: (data) => (this.events = data),
+      error: (err) => console.error(err)
+    });
   }
 
-  showSection(section: string) {
-    this.activeSection = section;
+  // it is used to refresh the events list
+  loadEvents() {
+    this.isLoading = true;
+    this.eventService.getEvents().subscribe({
+      next: (data) => (this.events = data),
+      error: (err) => {
+        console.error(err);
+        this.isLoading = false;
+      }
+    });
   }
 
   submitEvent() {
@@ -67,28 +84,16 @@ export class AdminDashboardComponent implements OnInit {
     }
   }
 
-  loadEvents() {
-    this.isLoading = true;
-    this.eventService.getEvents().subscribe({
-      next: (data) => (this.events = data),
-      error: (err) => {
-        console.error(err);
-        this.isLoading = false;
-      }
-    });
+
+  showSection(section: string) {
+    this.activeSection = section;
   }
 
-  loadParticipants() {
-    this.participantService.getParticipants().subscribe({
-      next: (data) => {
-        this.participants = data;
-      },
-      error: (err) => {
-        console.error('Error loading participants', err);
-      }
-    });
-    
-  }
+  // rest of your existing code (eventForm, participants, etc.)
+
+  
+  // whenever admin click on edit button the selected event data is loaded into the form for editing
+  //Uses patchValue() so the existing event values appear in the form.
   editEvent(event: any) {
     this.editingEventId = event._id;
     this.eventForm.patchValue(event);

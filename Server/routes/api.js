@@ -112,8 +112,12 @@ router.post('/admission',async(req,res) =>
 {
    try 
    {
-      const {studentName ,email,phone,eventId} = req.body;
+    
+      const { name, email, phone, eventId } = req.body;
 
+       if (!name || !email || !eventId) {
+      return res.status(400).json({ message: 'Missing required fields' });
+    }
       // find the event  by ID
       const event = await Event.findById(eventId);
       if(!event)
@@ -127,15 +131,12 @@ router.post('/admission',async(req,res) =>
          return res.status(400).json({message:'User already exists'});
       }
       // 2.Map frontend data to Addmission schema
-      const admission  =  new newAddmission ({
-         name:studentName,
-         email,
-         phone,
-         event:event.name
-      });
-      await admission.save();
+     
+     const Admission = new newAdmission({ name, email, phone, eventId });
+    await Admission.save();
 
-    
+     res.status(201).json({ message: 'Admission submitted successfully', admission: newAdmission });
+
          // 3. Send confirmation email
    const transporter = nodemailer.createTransport({
              service: 'gmail',

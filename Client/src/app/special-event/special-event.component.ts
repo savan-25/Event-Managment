@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
-import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { EventData } from '../event/eventi.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -45,20 +44,12 @@ export class SpecialEventComponent implements OnInit {
     modal.show();
   }
 
-  submitAdmission() {
-    this.admissionForm.patchValue({ eventId: this.selectedEvent._id });
-
-    this._eventService.submitAdmission(this.admissionForm.value).subscribe({
-      next: (res) => {
-        alert('Admission submitted successfully!');
-        this.selectedEvent = null;
-        this.admissionForm.reset();
-      },
-      error: (err) => {
-        alert('Error submitting admission.');
-      }
-    });
-  }
+  
+   onFormSubmitted(data: any) {
+    alert("Form is submitted");
+  console.log('Admission Form Data:', data);
+  this.selectedEvent = null;
+}
 
   ngOnInit() {
     this._eventService.getSpecialEvents().subscribe(
