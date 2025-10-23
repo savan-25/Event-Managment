@@ -9,4 +9,8 @@ const addmissionSchema = new mongoose.Schema(
     }
 );
 
+
+// ✅ Ensure one unique registration per email per event
+addmissionSchema.index({ email: 1, eventId: 1 }, { unique: true });
+
 module.exports = mongoose.model('Admission',addmissionSchema);

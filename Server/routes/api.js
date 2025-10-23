@@ -55,6 +55,14 @@ router.post('/admission',async(req,res) =>
        if (!name || !email || !eventId) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
+    // check if this is already registered for same event
+    const existingmember = await newAdmission.findOne({email,eventId});
+
+    if(existingmember)
+    {
+      return res.status(400).json({message:"You are already Registered"});
+    }
+
     const Admission = new newAdmission({ name, email, phone, eventId });
     await Admission.save();
 

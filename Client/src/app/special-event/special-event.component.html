@@ -6,20 +6,29 @@
   </div>
 </div>
 
+<!-- Event Cards -->
 <div class="row mt-5">
-    <div class="col-md-4 mb-3" *ngFor="let event of specialEvents">
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title">{{event.name}}</h5>
-          <p class="card-text">{{event.description}}</p>
-          <a  class="btn btn-primary" (click)="openAdmissionModal(event)">Take Admission</a>
-        </div>
-        <div class="card-footer text-muted">
-          {{event.Teacher}}
-        </div>
+  <div class="col-md-4 mb-4" *ngFor="let event of specialEvents">
+    <div class="card text-center shadow-sm border-0 h-100 card-hover">
+      
+      <!-- Optional card header for type -->
+ 
+
+      <div class="card-body">
+        <h5 class="card-title" style="color: #00695c; font-weight: bold;">{{ event.name }}</h5>
+        <p class="card-text" style="color: #004d40;">{{ event.description }}</p>
+        <button class="btn btn-success" (click)="openAdmissionModal(event)" 
+                style="background-color: #1de9b6; border: none; font-weight: bold; ">
+          Take Admission
+        </button>
+      </div>
+
+      <div class="card-footer text-muted" style="background-color: #e0f2f1; font-style: italic; color: #004d40;">
+        Teacher: {{ event.Teacher }}
       </div>
     </div>
   </div>
+</div>
 
 <app-admission-form
   *ngIf="selectedEvent"

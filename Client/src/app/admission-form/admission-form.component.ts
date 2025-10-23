@@ -38,15 +38,18 @@ export class AdmissionFormComponent implements OnInit {
       };
 
       this._authService.submitAdmission(formData).subscribe({
-        next: (res) => {
-          alert('Admission submitted successfully!');
-          this.formSubmitted.emit(`Admission submitted for ${this.selectedEvent.name}`);
-          this.admissionForm.reset();
-        },
-        error: (err) => {
-          alert('Error submitting admission.');
-        }
-      });
+  next: (res) => {
+    alert(res.message); // ✅ show message from backend
+    this.formSubmitted.emit(`Admission submitted for ${this.selectedEvent.name}`);
+    this.admissionForm.reset();
+  },
+  error: (err) => {
+    // err.error.message comes from backend error response
+    const errorMessage = err.error?.message || 'Something went wrong!';
+    alert(errorMessage);
+  }
+});
+
     }
   }
 }
